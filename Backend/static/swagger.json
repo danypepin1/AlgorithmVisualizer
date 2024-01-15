@@ -1,0 +1,30 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Your Flask API",
+      "description": "API documentation for your Flask API",
+      "version": "1.0.0"
+    },
+    "host": "localhost:5000",
+    "basePath": "/",
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/data": {
+        "get": {
+          "description": "Description of your GET endpoint",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response"
+
+            }
+          }
+        }
+      }
+    }
+  }
+  
