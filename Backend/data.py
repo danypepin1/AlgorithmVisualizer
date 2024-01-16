@@ -4,7 +4,6 @@ import networkx as nx
 import folium
 
 def fetch_osm_data(city_name):
-    # Define the Overpass API query
     query = f"""
     [out:json];
     area[name="{city_name}"]->.searchArea;
@@ -17,15 +16,13 @@ def fetch_osm_data(city_name):
     out body;
     """
 
-    # URL of the Overpass API
     url = "http://overpass-api.de/api/interpreter"
 
     try:
         # Send the request to the Overpass API
         response = requests.get(url, params={'data': query})
-        response.raise_for_status()  # Raise an exception for HTTP errors
+        response.raise_for_status()
 
-        # Parse and return the JSON data
         return response.json()
 
     except requests.RequestException as e:
@@ -34,7 +31,7 @@ def fetch_osm_data(city_name):
     
 
 def save_to_file(data, filename):
-    # Save the data to a file in JSON format
+
     try:
         with open(filename, 'w') as file:
             json.dump(data, file, indent=4)
@@ -116,7 +113,6 @@ def plot_graph_on_map(graph):
         print("No nodes with position data found in the graph.")
         return """
     map_osm.save('map.html')
-# Save the map to an HTML file
 
 
 
