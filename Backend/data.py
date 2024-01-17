@@ -2,6 +2,7 @@ import requests
 import json
 import networkx as nx
 import folium
+import numpy as np
 
 def fetch_osm_data(city_name):
     query = f"""
@@ -47,6 +48,8 @@ def create_graph(osm_data):
     G = nx.Graph()
     node_count = 0
     edge_count = 0
+    latitudes = []
+    longitudes = []
 
     for element in osm_data['elements']:
         if element['type'] == 'node':
@@ -54,6 +57,8 @@ def create_graph(osm_data):
             lon = element.get('lon')
             if lat is not None and lon is not None:
                 G.add_node(element['id'], pos=(lat, lon))
+                latitudes.append(lat)
+                longitudes.append(lon)
                 node_count += 1
             else:
                 print(f"Missing position data for node: {element['id']}")
@@ -64,6 +69,10 @@ def create_graph(osm_data):
 
     print(f"Total nodes added: {node_count}")
     print(f"Total edges added: {edge_count}")
+    center_lat = np.mean(latitudes)
+    center_lon = np.mean(longitudes)
+    print(center_lat, center_lon)
+    #46.888078813332584 -71.28621909824275
     return G
 
 def plot_graph_on_map(graph):
@@ -84,7 +93,7 @@ def plot_graph_on_map(graph):
             end_pos = end_node['pos']
             line = [start_pos, end_pos]
             folium.PolyLine(line, color="orange", weight=1).add_to(map_osm)
-            line_coords.extend(line)  # Add both start and end points of the line to the list
+            line_coords.extend(line)
 
     """ # Draw edges (streets)
     for edge in graph.edges():
@@ -114,6 +123,29 @@ def plot_graph_on_map(graph):
         return """
     map_osm.save('map.html')
 
+def convert_graph_to_json(graph):
+    data = {
+        "nodes": [],
+        "edges": []
+    }
+
+    # Iterate through each node in the graph
+    for node_id, node_attrs in graph.nodes(data=True):
+        node_data = {
+            "id": node_id,
+            "position": node_attrs.get('pos', (None, None))
+        }
+        data["nodes"].append(node_data)
+
+    # Iterate through each edge in the graph
+    for start_node, end_node in graph.edges():
+        edge_data = {
+            "from": start_node,
+            "to": end_node
+        }
+        data["edges"].append(edge_data)
+
+    return data
 
 
 

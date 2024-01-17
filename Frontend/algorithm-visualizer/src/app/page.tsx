@@ -1,11 +1,12 @@
 import Image from 'next/image'
 import styles from './page.module.css'
-import MapView from './components/MapView'
-
+import MapView from './components/Mapview/MapView'
+import dynamic from 'next/dynamic';
+const MapViewWithNoSSR = dynamic(() => import('./components/Mapview/MapView'), { ssr: false });
 export default function Home() {
   return (
     <main className={styles.main}>
-      <MapView />
+      <MapViewWithNoSSR />
       <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
