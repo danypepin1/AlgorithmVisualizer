@@ -1,3 +1,22 @@
 .leaflet-path {
     stroke: orange !important;
   }
+
+/* .leaflet-touch .leaflet-control-layers, .leaflet-touch .leaflet-bar
+{
+  background-color: black !important;
+  position: absolute;
+  right: 50%;
+  left: 50%;
+
+}
+
+
+.glass {
+  color: orange !important;
+}
+
+.results.active {
+  color: orange !important;
+}
+ */
